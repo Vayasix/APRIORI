@@ -2,5 +2,6 @@ test.cpp/*
 apriori.dSYM/*
 tmp/*
 python/*
-data/*
+data/input/*
+data/src/test/*
 
