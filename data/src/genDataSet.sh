@@ -16,16 +16,21 @@
 #   -version (to print out version info)
 
 #T
-tlen=10
-#I
-patlen=6
+tlen=50
+
+#I 
+# nitemsに対して"1/100"くらいの小ささだと、length-1で終わる。
+# "1/10"だとcandidateができすぎて、かなり時間がかかる。
+patlen=25
+
 #N (should be devided by 1000)
 nitems=1
 #D (should be devided by 1000, ~k)
-ntrans=10.75
+ntrans=0.118
 #L
-npats=1000
-fname="T10I6N1kD10kL1k"
+npats=1000000
+fname="TEST"
+#fname="TEST"
 #fname="T${tlen}I${patlen}N${nitems}D${ntrans}L${npats}"
 
 # exec
@@ -40,6 +45,7 @@ python ./binary.py tmpf ${fname} $nitems $ntrans
 rm -rf *.data *.pat tmpf
 if [[ -e ../input/$fname ]]; then
     echo "This file already exists in ../input/"
+    mv -f ./$fname ../input/
 else
     mv ./$fname ../input/
 fi

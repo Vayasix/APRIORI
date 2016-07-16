@@ -5,6 +5,7 @@
 #include <string> 
 #include <vector> 
 #include <unordered_map>
+#include <math.h>
 #include "apriori.h"
 
 //using namespace TestCode;
@@ -234,6 +235,8 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
         int cnt = 0;
 		bool hasSamePattern = false;
 		bool isAllFrequent = false;
+        // for loging progress per 1 %
+        int x = n_cand/100;
 
 		for (int i = 0; i < n_cand-1; i++) { // i itemset
 			for (int j = i + 1; j < n_cand; j++) { // i + 1 itemset
@@ -277,7 +280,10 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
             // cnt == 0 means notithing generated from freqItemSets[i]
             cntVec.push_back(cnt); 
             cnt = 0;
-            std::printf("  Estimate-candidate status: (%d / %d item) %3.3lf%%\n", i, n_cand, ((double)i/n_cand)*100.0);
+
+            // loging progress per 10%
+            //if ( i % (x*10) == 0 )
+                std::printf("  Estimate-candidate status: (%d / %d item) %3.3lf%%\n", i, n_cand, ((double)i/n_cand)*100.0);
 		} // end for i itemsets
 //         cout << "#cntVec: " << cntVec.size() << ", #cis: " << cis.size() << endl;
         return cntVec;
@@ -313,6 +319,8 @@ void TestCode::Apriori::candidateGenerator(int pattern_length){
         std::vector<std::vector<int>> subsets;
 		bool hasSamePattern = false;
         bool isAllFrequent = false; 
+        // for loging progress per 1 %
+        int x = n_freq/100;
 
 		for(int i = 0; i < n_freq-1; i++){                   // ith pattern 
 			for(int j = i + 1; j < n_freq; j++) {            // next (i+1)th-pattern
@@ -369,7 +377,10 @@ void TestCode::Apriori::candidateGenerator(int pattern_length){
 				} // end for k in i + 1 itemset
 			} // end for i + 1 itemsets
 			history.clear();
-            std::printf("  Generate-candidate status: (%d / %d item) %3.3lf%%\n", i, n_freq, ((double)i/n_freq)*100.0);
+
+            // loging progress per 10%
+            //if ( i % (x*10) == 0 )
+                std::printf("  Generate-candidate status: (%d / %d item) %3.3lf%%\n", i, n_freq, ((double)i/n_freq)*100.0);
 		} // end for i itemsets
 	}
 }
@@ -494,38 +505,38 @@ void TestCode::Apriori::runApriori(std::string filename, double minsup)
     int i_roop = 1;
 
     while(true){
-        std::cerr << " ---------- Generate Candidate ---------- " << std::endl;
+        std::cerr << "\n ---------- Generate Candidate ---------- \n" << std::endl;
         this->candidateGenerator(i_roop);
-        std::cerr << "======= Item length: [ " 
+        std::cerr << "\n======= Item length: [ " 
             << i_roop 
             << " ] ====== " << std::endl;
         std::cerr << "Size of candidate itemsets: " 
             << this->getCandItemSetSize() << "\n" << std::endl;
         if ( this->getCandItemSetSize() == 0) break;
 //         util.printMat(this->candItemSets);
-        std::cerr << " ... Done. \n" << std::endl;
+        std::cerr << "\n ... Done. \n" << std::endl;
         
         //calc total sum for each items
         this->clearCandSupports();
-        std::cerr << " ---------- Estimate Patterns ---------- " << std::endl;
+        std::cerr << "\n ---------- Estimate Patterns ---------- \n" << std::endl;
         std::vector<int> cntVec = this->estimatePatterns(i_roop);  //estimation of next calculation
         //util.printVec(cntVec);
-        std::cerr << " ... Done. \n" << std::endl;
+        std::cerr << "\n ... Done. \n" << std::endl;
 
-        std::cerr << " ---------- Count Support ---------- " << std::endl;
+        std::cerr << "\n ---------- Count Support ---------- \n" << std::endl;
         n_cache = this->countSupport(cntVec); //returns supports array
         n_eachCaches.push_back(n_cache);
 //         std::cerr << "Each candidate's value:" << std::endl; 
 //         util.printVec(this->candSup);
-        std::cerr << " ... Done. \n" << std::endl;
+        std::cerr << "\n ... Done. \n" << std::endl;
         this->clearFreqItemSets();
 
-        std::cerr << " ---------- Check Support ---------- " << std::endl;
+        std::cerr << "\n ---------- Check Support ---------- \n" << std::endl;
         /* get new freqItemSets, each elem is over threshold*/
         this->checkSupport();
 //         std::cerr << "Freqent item sets:" << std::endl;
 //         util.printMat(this->freqItemSets);
-        std::cerr << " ... Done. \n" << std::endl;
+        std::cerr << "\n ... Done. \n" << std::endl;
 
         /* stored for result */
         resultFreqItemSets.push_back(freqItemSets);
@@ -571,8 +582,8 @@ int main(int argc, char **argv)
 {
     // instance generation
     TestCode::Apriori apriori;
-//     std::string data = "./data/input/T10I6N50D100L1k";
-    std::string data = "./data/input/T100I10N1kD100L1k_tmp";
+//     std::string data = "./data/input/T10I25N1kD1kL1k";
+    std::string data = "./data/input/TEST";
     double minsup = 0.1;
     apriori.runApriori(data, minsup);
 

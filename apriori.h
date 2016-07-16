@@ -26,7 +26,7 @@ namespace TestCode{
         void setNumTrans(int ntrans) { this->ntrans = ntrans; };
         void setNumItems(int nitems) { this->nitems = nitems; };
         void setMinSup(double ms) { this->minsup = ms; };
-        void setThreshold() { this->threshold = ceil(minsup * ntrans); };
+        void setThreshold() { this->threshold = ceil(minsup*ntrans); };
         /* Get */ 
         std::string getFile() { return this->filename; };
         int getNumTrans() { return this->ntrans; };

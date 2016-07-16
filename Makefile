@@ -4,6 +4,7 @@ $(info $(TOPDIR))
 $(info )
 
 CFLAGS = -O2 -std=c++11 
+#CFLAGS+= -Wall -I/usr/local/include
 DEBUG = -g 
 LDLIBS = -L/usr/local/lib -L/usr/local/include -lntl -lm -lrt -lstdc++
 
