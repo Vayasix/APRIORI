@@ -20,6 +20,11 @@
  * Rules which satisfy the min.support and min.confidence threshold.
  */
 
+// TODO 1: func. candidateGenerator, estimatePatterns 
+// が似ているから一つの関数にできる。
+// TODO 2: dummy set を加えるfunc.をつくる
+// TODO 3: improve aprioriを実装したい。
+// TODO 4: estimateが非常に重たい計算になる。高速化したい。
 
 //======================== Class Util ===================================
 
