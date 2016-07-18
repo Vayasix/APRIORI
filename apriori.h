@@ -8,7 +8,7 @@ namespace TestCode{
         public:
         
         /* Class Methods */
-        void runApriori(std::string filename, double minsup);
+        void runApriori(std::string filename, double minsup, bool cacheflag, bool pruneflag);
         void loadData();
         void candidateGenerator(int length);
         void checkSupport();
@@ -27,6 +27,8 @@ namespace TestCode{
         void setNumItems(int nitems) { this->nitems = nitems; };
         void setMinSup(double ms) { this->minsup = ms; };
         void setThreshold() { this->threshold = ceil(minsup*ntrans); };
+        void setCacheFlag(bool flag) { this->calcCacheFlag = flag; };
+        void setPruneFlag(bool flag) { this->hasPruneStep = flag; };
         /* Get */ 
         std::string getFile() { return this->filename; };
         int getNumTrans() { return this->ntrans; };
@@ -47,7 +49,8 @@ namespace TestCode{
         std::string filename;
         int ntrans, nitems;
         double minsup, threshold; 
-        bool calcCacheFlag = true;
+        bool calcCacheFlag;
+        bool hasPruneStep;
         std::vector<int> candSup;
         std::vector<std::vector<int>> candItemSets;
         std::vector<std::vector<int>> freqItemSets;

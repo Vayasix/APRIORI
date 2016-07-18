@@ -137,12 +137,14 @@ std::vector<int> TestCode::Apriori::countSupport(std::vector<int> cntVec)
     std::vector<std::vector<int>> cis = this->candItemSets;
 
     int res = 0;
+    int n_cand = cis.size();
     int length = cis[0].size();
     std::vector<int> supAry; //supports array
     int cntN = 0;
     int ntrans = this->getNumTrans();
     TestCode::Util util;
 
+    int x = n_cand/100;
 
     for (int i = 0; i < cis.size(); i++)
     {
@@ -157,6 +159,7 @@ std::vector<int> TestCode::Apriori::countSupport(std::vector<int> cntVec)
 
             if (this->calcCacheFlag && this->calcCache.count(hash) != 0)
             {
+//                 std::printf("Using Cache\n");
                 calcCacheInt = this->calcCache.at(hash);
 //                 std::cout << "key: " << hash << ", val: " << calcCacheInt << std::endl;
                 start = end - 1;
@@ -199,13 +202,16 @@ std::vector<int> TestCode::Apriori::countSupport(std::vector<int> cntVec)
             }
 
             sum += cacheCopy; //sum up
-        }
+        } // end k
         supAry.push_back(sum);
-    }
+        // loging progress per 10%
+        if ( x != 0 && i % (x*10) == 0 )
+            std::printf("  Support-Count status: (%d / %d item) %3.3lf%%\n", i, n_cand, ((double)i/n_cand)*100.0);
+    } // end i
     this->candSup = supAry;
 
     double caches = cis.size() * ntrans;
-    std::printf("    #cached %.0f :-> %d (%.1f %%)\n", caches, cntN, (caches-cntN)*100/caches);
+    std::printf("\n    #cached %.0f :-> %d (%.1f %%)\n", caches, cntN, (caches-cntN)*100/caches);
 
     std::vector<int> cache;
     cache.push_back(caches);
@@ -263,10 +269,20 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                             new_pattern = this->candItemSets[i];
                             new_pattern.push_back(jth_each_id);
 
-                            // check all subsets of new pattern are frequent
-                            subsets = this->getSubsets(new_pattern);
-                            isAllFrequent = this->checkFreqOfSubsets(subsets, this->candItemSets);
-                            //count # contributions of freqitemsets[i] 
+                            /* check all subsets of new pattern are frequent */
+                            if (this->hasPruneStep)
+                            {   // perform prune
+                                //std::printf("pruning: (i,j,k)=(%d,%d,%d) for i in %d\n", i,j,k, n_cand);
+                                subsets = this->getSubsets(new_pattern);
+                                isAllFrequent = this->checkFreqOfSubsets(subsets, this->candItemSets);
+                            }
+                            else
+                            {   // no prune
+                                //std::printf("w/o prune\n");
+                                isAllFrequent = true;
+                            }
+
+                            /* count # contributions of freqitemsets[i] */
                             if (isAllFrequent) cnt++;
 						}
 					} // end for generation of new candidate
@@ -282,7 +298,7 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
             cnt = 0;
 
             // loging progress per 10%
-            //if ( i % (x*10) == 0 )
+            if ( x != 0 && i % (x*10) == 0 )
                 std::printf("  Estimate-candidate status: (%d / %d item) %3.3lf%%\n", i, n_cand, ((double)i/n_cand)*100.0);
 		} // end for i itemsets
 //         cout << "#cntVec: " << cntVec.size() << ", #cis: " << cis.size() << endl;
@@ -346,26 +362,36 @@ void TestCode::Apriori::candidateGenerator(int pattern_length){
                         {
                             history.push_back(jth_each_id);
 
-                            // generate new pattern
+                            /* generate new pattern */
                             new_pattern = this->freqItemSets[i];
                             new_pattern.push_back(jth_each_id);
 
-                            // ########## DEBUG ############
+                            /* ########## DEBUG ############ */
                             //std::printf("new_pattern \n");
                             //TestCode::Util util;
                             //util.printVec(new_pattern);
-                            // ########## DEBUG ############
+                            /* ########## DEBUG ############ */
 
-                            // check all subsets of new pattern are frequent
-                            subsets = this->getSubsets(new_pattern);
+                            /* check all subsets of new pattern are frequent */
+                            if (this->hasPruneStep)
+                            {   //perform prune 
+                                //printf("pruning\n");
+                                subsets = this->getSubsets(new_pattern);
 
-                            // ########## DEBUG ############
-                            //std::printf("subsets\n");
-                            //TestCode::Util util;
-                            //util.printMat(subsets);
-                            // ########## DEBUG ############
+                                /* ########## DEBUG ############ */
+                                //std::printf("subsets\n");
+                                //TestCode::Util util;
+                                //util.printMat(subsets);
+                                /* ########## DEBUG ############ */
 
-                            isAllFrequent = this->checkFreqOfSubsets(subsets, this->freqItemSets);
+                                isAllFrequent = this->checkFreqOfSubsets(subsets, this->freqItemSets);
+                            }
+                            else
+                            {   // no prune step
+                                //printf("w/o prune\n");
+                                isAllFrequent = true;
+                            }
+
                             if (isAllFrequent)
                                 this->candItemSets.push_back(new_pattern);
                         }
@@ -379,7 +405,7 @@ void TestCode::Apriori::candidateGenerator(int pattern_length){
 			history.clear();
 
             // loging progress per 10%
-            //if ( i % (x*10) == 0 )
+            if ( x != 0 && i % (x*10) == 0 )
                 std::printf("  Generate-candidate status: (%d / %d item) %3.3lf%%\n", i, n_freq, ((double)i/n_freq)*100.0);
 		} // end for i itemsets
 	}
@@ -487,9 +513,11 @@ void TestCode::Apriori::checkSupport(){
 
 
 
-void TestCode::Apriori::runApriori(std::string filename, double minsup)
+void TestCode::Apriori::runApriori(std::string filename, double minsup, bool calcCacheFlag, bool hasPruneStep)
 {
     this->setFile(filename);
+    this->setCacheFlag(calcCacheFlag);
+    this->setPruneFlag(hasPruneStep);
     this->loadData();
     this->setMinSup(minsup);
     double ms = this->getMinSup();
@@ -505,23 +533,26 @@ void TestCode::Apriori::runApriori(std::string filename, double minsup)
     int i_roop = 1;
 
     while(true){
-        std::cerr << "\n ---------- Generate Candidate ---------- \n" << std::endl;
-        this->candidateGenerator(i_roop);
         std::cerr << "\n======= Item length: [ " 
             << i_roop 
             << " ] ====== " << std::endl;
-        std::cerr << "Size of candidate itemsets: " 
+        std::cerr << "\n ---------- Generate Candidate ---------- \n" << std::endl;
+        this->candidateGenerator(i_roop);
+        std::cerr << " Size of candidate itemsets: " 
             << this->getCandItemSetSize() << "\n" << std::endl;
         if ( this->getCandItemSetSize() == 0) break;
 //         util.printMat(this->candItemSets);
         std::cerr << "\n ... Done. \n" << std::endl;
         
-        //calc total sum for each items
         this->clearCandSupports();
+
         std::cerr << "\n ---------- Estimate Patterns ---------- \n" << std::endl;
         std::vector<int> cntVec = this->estimatePatterns(i_roop);  //estimation of next calculation
-        //util.printVec(cntVec);
+//         std::cerr << "\n ### DEBUG MODE ###\n" << std::endl;
+//         std::vector<int> cntVec(this->getCandItemSetSize(), 1); 
+//         util.printVec(cntVec);
         std::cerr << "\n ... Done. \n" << std::endl;
+
 
         std::cerr << "\n ---------- Count Support ---------- \n" << std::endl;
         n_cache = this->countSupport(cntVec); //returns supports array
@@ -582,10 +613,12 @@ int main(int argc, char **argv)
 {
     // instance generation
     TestCode::Apriori apriori;
-//     std::string data = "./data/input/T10I25N1kD1kL1k";
-    std::string data = "./data/input/TEST";
+    std::string data = "./data/input/BEST_T40I60N500D1kL1k";
+//     std::string data = "./data/input/TEST";
     double minsup = 0.1;
-    apriori.runApriori(data, minsup);
+    bool calcCacheFlag = true;
+    bool hasPruneStep = true;
+    apriori.runApriori(data, minsup, calcCacheFlag, hasPruneStep);
 
     return 0;
 }
