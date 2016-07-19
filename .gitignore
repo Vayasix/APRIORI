@@ -4,4 +4,5 @@ tmp/*
 python/*
 data/input/*
 data/src/test/*
-
+jsoncons/*
+_jsoncons/*
