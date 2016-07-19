@@ -24,9 +24,9 @@ tlen=10
 patlen=10
 
 #N (should be devided by 1000)
-nitems=0.05
+nitems=0.50
 #D (should be devided by 1000, ~k)
-ntrans=0.1
+ntrans=1.39
 #L
 npats=1000
 #fname="T50I100N1kD1kL5k"

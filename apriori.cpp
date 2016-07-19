@@ -130,6 +130,9 @@ std::string TestCode::Log::setEvalResult(int i_roop,
         int n_cand_itemset_w_dummy, int n_freq_itemset,  
         int n_cache_wo_prune, int n_cache_w_prune)
 {
+
+    double saved = (n_cache_wo_prune - n_cache_w_prune)*100/n_cache_wo_prune;
+
     std::ostringstream oss;
     json v;
 
@@ -140,6 +143,7 @@ std::string TestCode::Log::setEvalResult(int i_roop,
     v["n_freq_itemset"] = n_freq_itemset;  
     v["n_cache_wo_prune"] = n_cache_wo_prune;
     v["n_cache_w_prune"] = n_cache_w_prune;
+    v["percent_saved"] = saved;
 
     /*save all in one place */
     std::stringstream ss;
@@ -908,7 +912,7 @@ int main(int argc, char **argv)
     TestCode::Apriori apriori;
 //     std::string data = "./data/input/BEST_T40I60N500D1kL1k";
     std::string data = "./data/input/TEST";
-    std::string fnameLog= "./apriori.log";
+    std::string fnameLog= "./apriori.log.json";
     double minsup = 0.1;
     double alpha = 0.5;
     bool calcCacheFlag = true;
