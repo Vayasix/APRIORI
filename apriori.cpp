@@ -393,7 +393,15 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                             }
 
                             /* count # contributions of freqitemsets[i] */
-                            if (isAllFrequent) cnt++;
+                            if (isAllFrequent)
+                            {
+                                cnt++;
+                                hasSamePattern = false;
+                                isAllFrequent = false;
+                                new_pattern.clear();
+                                // No need to consider ith pattern more 
+                                break; // going out from k roop
+                            }
 						}
 					} // end for generation of new candidate
                     // reset & prep for next new candidate pattern
@@ -401,7 +409,15 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                     isAllFrequent = false;
 					new_pattern.clear();
 				} // end for k in i + 1 itemset
-			} // end for i + 1 itemsets
+
+                /* No need to consider ith pattern more 
+                 * in the present setting
+                 * going out from j roop */
+//                 if (cnt > 0) 
+//                     std::printf("(i,j,k)=(%d,%d,-), cnt=%d\n", i,j,cnt);
+                if (cnt > 0) break;
+
+			} // end for j in i + 1 itemsets
 			history.clear();
             // cnt == 0 means notithing generated from freqItemSets[i]
             cntVec.push_back(cnt); 
@@ -540,6 +556,11 @@ void TestCode::Apriori::dummyGenerator(int pattern_length)
     std::vector<std::vector<int>> subsets;
 	bool hasSamePattern = false;
 	bool isAllFrequent = false;
+
+    // NOTE: if infreq-itemsets were very large, it would take long execution time 
+    if (n_ifis >= this->getFreqItemSetSize())
+        n_ifis = this->getFreqItemSetSize();
+
     int x = n_ifis/100;
 
 	for (int i = 0; i < n_ifis-1; i++) {

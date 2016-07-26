@@ -16,17 +16,17 @@
 #   -version (to print out version info)
 
 #T
-tlen=10
+tlen=50
 
 #I 
 # nitemsに対して"1/100"くらいの小ささだと、length-1で終わる。
 # "1/10"だとcandidateができすぎて、かなり時間がかかる。
-patlen=10
+patlen=50
 
 #N (should be devided by 1000)
-nitems=0.50
+nitems=1
 #D (should be devided by 1000, ~k)
-ntrans=1.39
+ntrans=1.40
 #L
 npats=1000
 #fname="T50I100N1kD1kL5k"
