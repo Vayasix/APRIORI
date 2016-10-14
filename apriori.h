@@ -10,9 +10,9 @@
 #include <unordered_map>
 #include <math.h>
 #include "MT.h"
-#include "jsoncons/json.hpp"
-using jsoncons::json;
-using jsoncons::json_deserializer;
+// #include "jsoncons/json.hpp"
+// using jsoncons::json;
+// using jsoncons::json_deserializer;
 
 // #include <boost/filesystem.hpp>
 // namespace fs = boost::filesystem;
@@ -25,8 +25,8 @@ namespace TestCode{
         public:
         
         /* Class Methods */
-        void runApriori(std::string fnameData, std::string fnameLog, double minsup, double alpha, 
-                bool cacheflag, bool pruneflag, bool dummyflag);
+//         void runApriori(std::string fnameData, std::string fnameLog, double minsup, double alpha, bool cacheflag, bool pruneflag, bool dummyflag);
+        void runApriori(std::string fnameData, double minsup, double alpha, bool cacheflag, bool pruneflag, bool dummyflag);
         void loadData();
         void candidateGenerator(int length);
         void dummyGenerator(int length);
@@ -106,36 +106,36 @@ namespace TestCode{
 
     }; // class Util 
 
-    class Log
-    { 
-        public:
-        std::string setParam(std::string fnameData, std::string fnameLog, 
-                int ntrans, int nitems,
-                double mimsup, double threshold, double alp, 
-                bool calcCacheFlag, bool hasPruneStep, bool hasDummySet);
-        std::string setEvalResult(int i_roop, 
-                int n_cand_itemset_wo_dummy, int n_dummy_itemset, 
-                int n_cand_itemset_w_dummy, int n_freq_itemset,  
-                int n_cache_wo_prune, int n_cache_w_prune);
-        std::string setTotalResult(double sum1, double sum2, double saved);
-
-        bool saveLogToJsonFile(std::string str);
-        void saveLog(std::string str);
-        void setFile(std::string filename) { this->fnameLog = filename; };
-
-        /* summarization */
-        json result;
-        void initResult(){ 
-            this->result["roop"] = result;
-        };
-
-        private:
-        std::string fnameData, fnameLog;
-        int ntrans, nitems;
-        double minsup, threshold, alpha; 
-        bool calcCacheFlag, hasPruneStep, hasDummySet;
-
-    }; // class Log
+//     class Log
+//     { 
+//         public:
+//         std::string setParam(std::string fnameData, std::string fnameLog, 
+//                 int ntrans, int nitems,
+//                 double mimsup, double threshold, double alp, 
+//                 bool calcCacheFlag, bool hasPruneStep, bool hasDummySet);
+//         std::string setEvalResult(int i_roop, 
+//                 int n_cand_itemset_wo_dummy, int n_dummy_itemset, 
+//                 int n_cand_itemset_w_dummy, int n_freq_itemset,  
+//                 int n_cache_wo_prune, int n_cache_w_prune);
+//         std::string setTotalResult(double sum1, double sum2, double saved);
+//
+// //         bool saveLogToJsonFile(std::string str);
+//         void saveLog(std::string str);
+//         void setFile(std::string filename) { this->fnameLog = filename; };
+//
+//         /* summarization */
+// //         json result;
+//         void initResult(){ 
+//             this->result["roop"] = result;
+//         };
+//
+//         private:
+//         std::string fnameData, fnameLog;
+//         int ntrans, nitems;
+//         double minsup, threshold, alpha; 
+//         bool calcCacheFlag, hasPruneStep, hasDummySet;
+//
+//     }; // class Log
 
 } //namespace TestCode
 

@@ -80,115 +80,115 @@ void TestCode::Util::print3d(std::vector<std::vector<std::vector<int>>> vec){
 
 /* ========================  Class Log ===================================*/
 
-// void TestCode::Log::saveLog(std::string str) 
-// {
-//     std::fstream ofs(this->fnameLog.c_str(), std::ios::app);
-//     ofs << str << std::endl;
-//     ofs.close();
-// }
+void TestCode::Log::saveLog(std::string str) 
+{
+    std::fstream ofs(this->fnameLog.c_str(), std::ios::app);
+    ofs << str << std::endl;
+    ofs.close();
+}
 
-// std::string TestCode::Log::setParam(std::string fnameData, std::string fnameLog, 
-//         int ntrans, int nitems,
-//         double minsup, double threshold, double alpha, 
-//         bool calcCacheFlag, bool hasPruneStep, bool hasDummySet)
-// {
-//     this->fnameData = fnameData;
-//     this->fnameLog = fnameLog;
-//     this->ntrans = ntrans;
-//     this->nitems = nitems;
-//     this->minsup = minsup;
-//     this->threshold = threshold;
-//     this->alpha = alpha;
-//     this->calcCacheFlag = calcCacheFlag;
-//     this->hasPruneStep = hasPruneStep;
-//     this->hasDummySet = hasDummySet;
-//
-//     std::ostringstream oss;
-//     json v;
-//
-//     v["fname_data"] = fnameData;
-//     v["fname_log"] = fnameLog;
-//     v["ntrans"] = ntrans; 
-//     v["nitems"] = nitems;
-//     v["minsup"] = minsup;  
-//     v["threshold"] = threshold;
-//     v["alpha"] = alpha;
-//     v["flag_cache"] = calcCacheFlag;
-//     v["flag_prune"] = hasPruneStep;
-//     v["flag_dummy"] = hasDummySet;
-//
-//     /*save all in one place */
-//     this->result["params"] = v;
-//
-//     /*so that can return indipendently*/
-//     oss << v << std::endl;
-//     return oss.str();
-// }
+std::string TestCode::Log::setParam(std::string fnameData, std::string fnameLog, 
+        int ntrans, int nitems,
+        double minsup, double threshold, double alpha, 
+        bool calcCacheFlag, bool hasPruneStep, bool hasDummySet)
+{
+    this->fnameData = fnameData;
+    this->fnameLog = fnameLog;
+    this->ntrans = ntrans;
+    this->nitems = nitems;
+    this->minsup = minsup;
+    this->threshold = threshold;
+    this->alpha = alpha;
+    this->calcCacheFlag = calcCacheFlag;
+    this->hasPruneStep = hasPruneStep;
+    this->hasDummySet = hasDummySet;
 
-// std::string TestCode::Log::setEvalResult(int i_roop, 
-//         int n_cand_itemset_wo_dummy, int n_dummy_itemset, 
-//         int n_cand_itemset_w_dummy, int n_freq_itemset,  
-//         int n_cache_wo_prune, int n_cache_w_prune)
-// {
-//
-//     double saved = (n_cache_wo_prune - n_cache_w_prune)*100/n_cache_wo_prune;
-//
-//     std::ostringstream oss;
-//     json v;
-//
-//     v["ith_roop"] = i_roop;
-//     v["n_cand_itemset_wo_dummy"] = n_cand_itemset_wo_dummy;
-//     v["n_dummy_itemset"] = n_dummy_itemset; 
-//     v["n_cand_itemset_w_dummy"] = n_cand_itemset_w_dummy;
-//     v["n_freq_itemset"] = n_freq_itemset;  
-//     v["n_cache_wo_prune"] = n_cache_wo_prune;
-//     v["n_cache_w_prune"] = n_cache_w_prune;
-//     v["percent_saved"] = saved;
-//
-//     /*save all in one place */
-//     std::stringstream ss;
-//     ss << i_roop;
-//     std::string str_num = ss.str();
-//     this->result["roop"].set(str_num, v);
-//
-//     /*so that can return indipendently*/
-//     oss << v << std::endl;
-//     return oss.str();
-// }
-//
+    std::ostringstream oss;
+    json v;
 
-// std::string TestCode::Log::setTotalResult(double sum1, double sum2, double saved)
-// {
-//     std::ostringstream oss;
-//     json v;
-//
-// //     saved << fixed << setprecision(1) << saved;
-//     v["N_cache_from"] = (int) sum1;
-//     v["N_cache_to"] = (int) sum2;
-//     v["percent_saved"] = saved; 
-//
-//
-//     /*save all in one place */
-//     this->result["total"] = v;
-//
-//     /*so that can return indipendently*/
-//     oss << v << std::endl;
-//     return oss.str();
-// }
+    v["fname_data"] = fnameData;
+    v["fname_log"] = fnameLog;
+    v["ntrans"] = ntrans; 
+    v["nitems"] = nitems;
+    v["minsup"] = minsup;  
+    v["threshold"] = threshold;
+    v["alpha"] = alpha;
+    v["flag_cache"] = calcCacheFlag;
+    v["flag_prune"] = hasPruneStep;
+    v["flag_dummy"] = hasDummySet;
 
-// bool TestCode::Log::saveLogToJsonFile(std::string str) 
-// {
-//     //std::fstream::truncは上書きしてしまう
-//     std::fstream ofs(this->fnameLog.c_str(), std::fstream::out | std::fstream::app);
-//     if (ofs){
-//         ofs << str;
-//         ofs.close();
-//         return true;
-//     }
-//     else{
-//         return false;
-//     }
-// }
+    /*save all in one place */
+    this->result["params"] = v;
+
+    /*so that can return indipendently*/
+    oss << v << std::endl;
+    return oss.str();
+}
+
+std::string TestCode::Log::setEvalResult(int i_roop, 
+        int n_cand_itemset_wo_dummy, int n_dummy_itemset, 
+        int n_cand_itemset_w_dummy, int n_freq_itemset,  
+        int n_cache_wo_prune, int n_cache_w_prune)
+{
+
+    double saved = (n_cache_wo_prune - n_cache_w_prune)*100/n_cache_wo_prune;
+
+    std::ostringstream oss;
+    json v;
+
+    v["ith_roop"] = i_roop;
+    v["n_cand_itemset_wo_dummy"] = n_cand_itemset_wo_dummy;
+    v["n_dummy_itemset"] = n_dummy_itemset; 
+    v["n_cand_itemset_w_dummy"] = n_cand_itemset_w_dummy;
+    v["n_freq_itemset"] = n_freq_itemset;  
+    v["n_cache_wo_prune"] = n_cache_wo_prune;
+    v["n_cache_w_prune"] = n_cache_w_prune;
+    v["percent_saved"] = saved;
+
+    /*save all in one place */
+    std::stringstream ss;
+    ss << i_roop;
+    std::string str_num = ss.str();
+    this->result["roop"].set(str_num, v);
+
+    /*so that can return indipendently*/
+    oss << v << std::endl;
+    return oss.str();
+}
+
+
+std::string TestCode::Log::setTotalResult(double sum1, double sum2, double saved)
+{
+    std::ostringstream oss;
+    json v;
+
+//     saved << fixed << setprecision(1) << saved;
+    v["N_cache_from"] = (int) sum1;
+    v["N_cache_to"] = (int) sum2;
+    v["percent_saved"] = saved; 
+
+
+    /*save all in one place */
+    this->result["total"] = v;
+
+    /*so that can return indipendently*/
+    oss << v << std::endl;
+    return oss.str();
+}
+
+bool TestCode::Log::saveLogToJsonFile(std::string str) 
+{
+    //std::fstream::truncは上書きしてしまう
+    std::fstream ofs(this->fnameLog.c_str(), std::fstream::out | std::fstream::app);
+    if (ofs){
+        ofs << str;
+        ofs.close();
+        return true;
+    }
+    else{
+        return false;
+    }
+}
 
 
 /* ========================  /Class Log ===================================*/
@@ -339,8 +339,6 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
     int n_cand = this->getCandItemSetSize();
     int pre_patLen = pattern_length - 1;
 
-//     Util().printMat(candItemSets);
-
 	if(pre_patLen == 0)
     {
 		for(int i = 0; i < n_cand; i++)
@@ -360,7 +358,7 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
 			for (int j = i + 1; j < n_cand; j++) { // i + 1 itemset
 				for (int k = 0; k < pre_patLen; k++) { // k in i + 1 itemset
 
-                    int ith_last_id = this->candItemSets[i][pre_patLen];
+                    int ith_last_id = this->candItemSets[i][pre_patLen-1];
                     int jth_each_id = this->candItemSets[j][k];
 
                     if(jth_each_id > ith_last_id)
@@ -386,19 +384,7 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                             {   // perform prune
                                 //std::printf("pruning: (i,j,k)=(%d,%d,%d) for i in %d\n", i,j,k, n_cand);
                                 subsets = this->getSubsets(new_pattern);
-                                if (pattern_length == 3)
-                                {
-                                    std::cerr << "i: " << i 
-                                        << ", j: " << j 
-                                        << " (max): " << n_cand
-                                        << ", jth_id: " << jth_each_id
-                                        << ", cnt: " << cnt 
-                                        << std::endl;
-                                    TestCode::Util util;
-                                    util.printVec(new_pattern);
-                                    util.printMat(subsets);
-                                }
-                                isAllFrequent = this->checkFreqOfSubsets(subsets, this->candItemSets); 
+                                isAllFrequent = this->checkFreqOfSubsets(subsets, this->candItemSets);
                             }
                             else
                             {   // no prune
@@ -407,10 +393,7 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                             }
 
                             /* count # contributions of freqitemsets[i] */
-                            if (isAllFrequent) {
-                                cnt++;
-//                                 std::printf("cnt = %d (isAllFrequent = %s)\n", cnt, isAllFrequent?"true":"false");
-                            }
+                            if (isAllFrequent) cnt++;
 						}
 					} // end for generation of new candidate
                     // reset & prep for next new candidate pattern
@@ -418,16 +401,9 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                     isAllFrequent = false;
 					new_pattern.clear();
 				} // end for k in i + 1 itemset
-			} // end for j itemsets
+			} // end for i + 1 itemsets
 			history.clear();
             // cnt == 0 means notithing generated from freqItemSets[i]
-//             if (cnt == 0)
-//             {
-//                 std::printf("\n cnt == 0 is not all frequent!!!!!!!!\n");
-// //                 Util().printMat(this->candItemSets);
-// //                 std::printf("%d", this->getCandItemSetSize());
-//                 exit(1);
-//             }
             cntVec.push_back(cnt); 
             cnt = 0;
 
@@ -477,8 +453,7 @@ void TestCode::Apriori::candidateGenerator(int pattern_length){
                     // check elements in the (i+1)th-pattern is over last element of ith-pattern
                     int ith_last_id = this->freqItemSets[i][pre_patLen-1];
                     int jth_each_id = this->freqItemSets[j][k];
-//                     Util().printVec(this->freqItemSets[i]);
-//                     std::printf("check: %d > %d\n", jth_each_id, ith_last_id);
+                    //std::printf("check: %d > %d\n", jth_each_id, ith_last_id);
                     if(jth_each_id > ith_last_id)
                     {
                         // search history to figure out the pattern had already added to new candidate set 
@@ -517,19 +492,7 @@ void TestCode::Apriori::candidateGenerator(int pattern_length){
                                 //TestCode::Util util;
                                 //util.printMat(subsets);
                                 /* ########## DEBUG ############ */
-                                if (pattern_length == 3)
-                                {
-                                    std::cerr << "i: " << i 
-                                        << ", j: " << j 
-                                        << " (max): " << n_freq
-                                        << ", ith_id: " << ith_last_id
-                                        << ", jth_id: " << jth_each_id
-                                        << std::endl;
-                                    TestCode::Util util;
-                                    util.printVec(new_pattern);
-//                                     util.printVec(this->freqItemSets[i]);
-//                                     util.printVec(this->freqItemSets[j]);
-                                }
+
                                 isAllFrequent = this->checkFreqOfSubsets(subsets, this->freqItemSets);
                             }
                             else
@@ -732,21 +695,12 @@ bool TestCode::Apriori::checkSetInSets(
         std::vector<int> keyset, 
         std::vector<std::vector<int>> sets)
 {
-
     bool isEqual = false;
     for ( std::vector<int> set : sets ){
         isEqual = this->isSameSet(keyset, set);
         // if find the same set, end func.
         if (isEqual) return true;
     }
-//     if (keyset.size() == 2 && !isEqual){
-//         std::printf("\n================ Search KEY ===================\n");
-//         Util().printVec(keyset);
-//         std::printf("\n================ Search From ===================\n");
-//         //Util().printMat(sets);
-//         std::printf("\nSomething wrong in pattern-length == 2\n");
-//         exit(1);
-//     }
     // if all set are not equal to keyset
     return false;
 }
@@ -799,13 +753,11 @@ void TestCode::Apriori::checkSupport(){
 
 
 
-// void TestCode::Apriori::runApriori(std::string fnameData, std::string fnameLog, double minsup, double alpha, 
-//         bool calcCacheFlag, bool hasPruneStep, bool hasDummySet)
-void TestCode::Apriori::runApriori(std::string fnameData, double minsup, double alpha, 
+void TestCode::Apriori::runApriori(std::string fnameData, std::string fnameLog, double minsup, double alpha, 
         bool calcCacheFlag, bool hasPruneStep, bool hasDummySet)
 {
     this->setDataFile(fnameData);
-//     this->setLogFile(fnameLog);
+    this->setLogFile(fnameLog);
     this->setCacheFlag(calcCacheFlag);
     this->setPruneFlag(hasPruneStep);
     this->setDummyFlag(hasDummySet);
@@ -822,12 +774,12 @@ void TestCode::Apriori::runApriori(std::string fnameData, double minsup, double 
     TestCode::Util util;
 
     /* store each variable to json format*/
-//     TestCode::Log log;
-//     log.initResult();
+    TestCode::Log log;
+    log.initResult();
 
-//     std::string params = log.setParam(fnameData, fnameLog, 
-//             this->getNumTrans(), this->getNumItems(), 
-//             ms, threshold, alp, calcCacheFlag, hasPruneStep, hasDummySet);
+    std::string params = log.setParam(fnameData, fnameLog, 
+            this->getNumTrans(), this->getNumItems(), 
+            ms, threshold, alp, calcCacheFlag, hasPruneStep, hasDummySet);
     //bool ret;
     //ret = log.saveLogToJsonFile(params);
     //if (!ret)
@@ -839,7 +791,7 @@ void TestCode::Apriori::runApriori(std::string fnameData, double minsup, double 
     std::vector<std::vector<int>> n_eachCaches;
 
     int i_roop = 1;
-//     std::string jsonFmt;
+    std::string jsonFmt;
 
     while(true){
         std::cerr << "\n======= Item length: [ " 
@@ -894,16 +846,16 @@ void TestCode::Apriori::runApriori(std::string fnameData, double minsup, double 
         resultFreqItemSets.push_back(freqItemSets);
 
         /* log to json file*/
-//         jsonFmt = log.setEvalResult(
-//                 i_roop,
-//                 n_cand_wo_dummy,
-//                 this->getDummyItemSetSize(), 
-//                 this->getCandItemSetSize(), 
-//                 this->getFreqItemSetSize(),
-//                 n_cache[0],
-//                 n_cache[1]
-//                 );
-//
+        jsonFmt = log.setEvalResult(
+                i_roop,
+                n_cand_wo_dummy,
+                this->getDummyItemSetSize(), 
+                this->getCandItemSetSize(), 
+                this->getFreqItemSetSize(),
+                n_cache[0],
+                n_cache[1]
+                );
+
 //         ret = log.saveLogToJsonFile(jsonFmt);
 //         if (!ret)
 //             std::cerr << "Apriori result log write error : " << this->fnameLog << std::endl;
@@ -928,7 +880,7 @@ void TestCode::Apriori::runApriori(std::string fnameData, double minsup, double 
     printf("                     %.1f %% saved!\n", saved);
 
     /* log to json file*/
-//     jsonFmt = log.setTotalResult(sum1, sum2, saved);
+    jsonFmt = log.setTotalResult(sum1, sum2, saved);
 
     sum1 = 0.0;
     sum2 = 0.0;
@@ -945,9 +897,9 @@ void TestCode::Apriori::runApriori(std::string fnameData, double minsup, double 
     //util.print3d(this->resultFreqItemSets);
 
     /* write down all results to file in json fmt */
-//     std::ostringstream oss;
-//     oss << log.result << std::endl;
-//     log.saveLogToJsonFile(oss.str());
+    std::ostringstream oss;
+    oss << log.result << std::endl;
+    log.saveLogToJsonFile(oss.str());
 }
 
 //======================== / Class Apriori ===================================
@@ -958,16 +910,15 @@ int main(int argc, char **argv)
 {
     // instance generation
     TestCode::Apriori apriori;
-    std::string data = "./data/input/T10I6N50D100L1k";
-//     std::string data = "./data/input/TEST";
-//     std::string fnameLog= "./apriori.log.json";
+//     std::string data = "./data/input/BEST_T40I60N500D1kL1k";
+    std::string data = "./data/input/TEST";
+    std::string fnameLog= "./apriori.log.json";
     double minsup = 0.1;
-//     double alpha = 0.5;
     double alpha = 0.5;
     bool calcCacheFlag = true;
     bool hasPruneStep = true;
-    bool hasDummySet = false;
-    apriori.runApriori(data, minsup, alpha, calcCacheFlag, hasPruneStep, hasDummySet);
+    bool hasDummySet = true;
+    apriori.runApriori(data, fnameLog, minsup, alpha, calcCacheFlag, hasPruneStep, hasDummySet);
 
     return 0;
 }
