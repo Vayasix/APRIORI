@@ -407,9 +407,20 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                             }
 
                             /* count # contributions of freqitemsets[i] */
+<<<<<<< HEAD
                             if (isAllFrequent) {
                                 cnt++;
 //                                 std::printf("cnt = %d (isAllFrequent = %s)\n", cnt, isAllFrequent?"true":"false");
+=======
+                            if (isAllFrequent)
+                            {
+                                cnt++;
+                                hasSamePattern = false;
+                                isAllFrequent = false;
+                                new_pattern.clear();
+                                // No need to consider ith pattern more 
+                                break; // going out from k roop
+>>>>>>> d5792843b73982b6748d7a38a4db651b37342932
                             }
 						}
 					} // end for generation of new candidate
@@ -418,7 +429,19 @@ std::vector<int> TestCode::Apriori::estimatePatterns(int pattern_length)
                     isAllFrequent = false;
 					new_pattern.clear();
 				} // end for k in i + 1 itemset
+<<<<<<< HEAD
 			} // end for j itemsets
+=======
+
+                /* No need to consider ith pattern more 
+                 * in the present setting
+                 * going out from j roop */
+//                 if (cnt > 0) 
+//                     std::printf("(i,j,k)=(%d,%d,-), cnt=%d\n", i,j,cnt);
+                if (cnt > 0) break;
+
+			} // end for j in i + 1 itemsets
+>>>>>>> d5792843b73982b6748d7a38a4db651b37342932
 			history.clear();
             // cnt == 0 means notithing generated from freqItemSets[i]
 //             if (cnt == 0)
@@ -577,6 +600,11 @@ void TestCode::Apriori::dummyGenerator(int pattern_length)
     std::vector<std::vector<int>> subsets;
 	bool hasSamePattern = false;
 	bool isAllFrequent = false;
+
+    // NOTE: if infreq-itemsets were very large, it would take long execution time 
+    if (n_ifis >= this->getFreqItemSetSize())
+        n_ifis = this->getFreqItemSetSize();
+
     int x = n_ifis/100;
 
 	for (int i = 0; i < n_ifis-1; i++) {
