@@ -11,6 +11,9 @@ CFLAGS+= -I/usr/local/include -I.
 
 .SUFFIXES: .cpp
 
+# clean:
+# 	rm apriori *.o
+
 ./%: %.cpp
 	$(CC) $(CFLAGS) $(DEBUG) -o $@ $< 
 
